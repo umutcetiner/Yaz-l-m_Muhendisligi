@@ -58,8 +58,7 @@ $favorisor->execute();
                   <th>Ad</th>
                   <th>Url</th>
                   <th>Durum</th>
-                  <th></th>
-                  <th></th>
+
                 </tr>
               </thead>
 
@@ -79,27 +78,23 @@ $favorisor->execute();
                  <td><?php echo $favoricek['favori_link'] ?></td>
 
 
-                 <td><center><?php 
+                 <td><center><?php
 
-                  if ($favoricek['favori_durum']==1) {?>
+                         if (@$favoricek['favori_durum']==0) {?>
 
-                  <button class="btn btn-success btn-xs">Aktif</button>
+                             <a href="../netting/islem.php?favori_id=<?php echo $favoricek['favori_id'] ?>&durum_one=1&favori_durum=ok"><button class="btn btn-success btn-xs">Aktif</button></a>
 
-                  <!--
 
-                  success -> yeşil
-                  warning -> turuncu
-                  danger -> kırmızı
-                  default -> beyaz
-                  primary -> mavi buton
+                         <?php } elseif ($favoricek['favori_durum']==1) {?>
 
-                  btn-xs -> ufak buton 
 
-                -->
+                             <a href="../netting/islem.php?favori_id=<?php echo $favoricek['favori_id'] ?>&durum_one=0&favori_durum=ok"><button class="btn btn-warning btn-xs">Pasif</button></a>
 
-                <?php } else {?>
+                         <?php } ?>
 
-                <button class="btn btn-danger btn-xs">Pasif</button>
+
+                     </center></td>
+
 
 
                 <?php } ?>
@@ -110,13 +105,12 @@ $favorisor->execute();
 
 
 
-            <td><center><a href="../netting/islem.php?favori_id=<?php echo $favoricek['favori_id']; ?>&favorisil=ok&favori_resim=<?php echo $favoricek['favori_resim'] ?>"><button class="btn btn-danger btn-xs">Sil</button></a></center></td>
+
           </tr>
 
 
 
-          <?php  }
-          ?>
+
 
 
         </tbody>

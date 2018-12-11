@@ -1084,18 +1084,19 @@ if ($_GET['urun_onecikar']=="ok") {
 
 }
 
-if ($_GET['yorum_onay']=="ok") {
+if ($_GET['favori_durum']=="ok") {
+
 
 	
-	$duzenle=$db->prepare("UPDATE yorumlar SET
+	$duzenle=$db->prepare("UPDATE favori SET
 		
-		yorum_onay=:yorum_onay
+		favori_durum=:favori_durum
 		
-		WHERE yorum_id={$_GET['yorum_id']}");
+		WHERE favori_id={$_GET['favori_id']}");
 	
 	$update=$duzenle->execute(array(
 
-		'yorum_onay' => $_GET['yorum_one']
+		'favori_durum' => $_GET['durum_one']
 		));
 
 
@@ -1104,11 +1105,11 @@ if ($_GET['yorum_onay']=="ok") {
 
 		
 
-		Header("Location:../production/yorum.php?durum=ok");
+		Header("Location:../production/favori.php?durum=ok");
 
 	} else {
 
-		Header("Location:../production/yorum.php?durum=no");
+		Header("Location:../production/favori.php?durum=no");
 	}
 
 }

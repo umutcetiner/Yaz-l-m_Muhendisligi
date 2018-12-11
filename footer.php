@@ -16,9 +16,10 @@ $favoricek=$favorisor->fetchAll(PDO::FETCH_ASSOC);
     <h4>Popular Brands</h4>
 </div>
 
-<ul class="clients-grid grid-6 nobottommargin clearfix"> <?php foreach ($favoricek as $value=> $item):  ?>
+<ul class="clients-grid grid-6 nobottommargin clearfix"> <?php  foreach ($favoricek as $value=> $item): if($item['favori_durum']>0){ ?>
+
     <li><a href="#"><img src="<?= $item{'favori_resim'} ?>" alt="Clients"></a></li>
-<?php endforeach; ?>
+<?php }endforeach; ?>
 </ul>
 
 </div>
