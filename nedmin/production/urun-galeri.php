@@ -112,7 +112,7 @@ include 'header.php';
 
                     </div>
 
-                    <?php  array("$urunfotosec"); ?>
+
 
 
                     <input type="checkbox" name="urunfotosec[]"  value="<?php echo $urunfotocek['urunfoto_id']; ?>" > Seç

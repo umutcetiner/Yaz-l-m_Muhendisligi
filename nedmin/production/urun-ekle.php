@@ -16,15 +16,15 @@ include 'header.php';
       <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
           <div class="x_title">
-            <h2>Ürün Düzenleme <small>,
+            <h2>Ürün Ekleme <small>,
 
               <?php 
 
-              if ($_GET['durum']=="ok") {?>
+              if (@$_GET['durum']=="ok") {?>
 
               <b style="color:green;">İşlem Başarılı...</b>
 
-              <?php } elseif ($_GET['durum']=="no") {?>
+              <?php } elseif (@$_GET['durum']=="no") {?>
 
               <b style="color:red;">İşlem Başarısız...</b>
 
@@ -55,12 +55,10 @@ include 'header.php';
 
                   <?php  
 
-                  $urun_id=$uruncek['kategori_id']; 
+                 // $urun_id=$uruncek['kategori_id'];
 
-                  $kategorisor=$db->prepare("select * from kategori where kategori_ust=:kategori_ust order by kategori_sira");
-                  $kategorisor->execute(array(
-                    'kategori_ust' => 0
-                    ));
+                  $kategorisor=$db->prepare("select * from kategori");
+                  $kategorisor->execute();
 
                     ?>
                     <select class="select2_multiple form-control" required="" name="kategori_id" >

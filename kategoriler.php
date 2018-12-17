@@ -1,167 +1,135 @@
 ﻿<?php 
 
-include 'header.php'; 
+include 'header.php';
+
+
+if(isset($_GET['sef'])){
+
+$kategorisor=$db->prepare("SELECT * FROM kategori where kategori_seourl=:seourl");
+$kategorisor->execute(array(
+        'seourl' => $_GET['sef']
+));
+$kategoricek=$kategorisor->fetch(PDO::FETCH_ASSOC);
+ $kategori_id=$kategoricek['kategori_id'];
+
+    $asd = "SELECT * FROM urunfoto  join urun on urun.urun_id=urunfoto.urun_id join kategori on kategori.kategori_id=urun.kategori_id where kategori.kategori_id=:kategori_id ";
+    $aaa = $db->prepare($asd);
+    $aaa ->execute(array(
+            'kategori_id'=>$kategori_id
+    ));
+    $bbb=$aaa->fetchall(PDO::FETCH_ASSOC);
+
+
+}else{
+    $asd = "SELECT * FROM urunfoto  join urun on urun.urun_id=urunfoto.urun_id join kategori on kategori.kategori_id=urun.kategori_id ";
+    $aaa = $db->prepare($asd);
+    $aaa ->execute();
+    $bbb=$aaa->fetchall(PDO::FETCH_ASSOC);
+}
+
+
+
+?>
+<?php
+
+//bütün kayıtları bir kereye mahsus olmak üzere listeliyoruz; daha doğrusu, bir diziye aktarmak için verileri çekiyoruz
+
+$query = "SELECT * FROM kategori order by kategori_sira ASC ";
+$goster = $db->prepare($query);
+$goster->execute();
+$goster2=$goster->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+
+
 
 
 
 ?>
 
+    <section id="content">
+
+        <div class="content-wrap">
+
+            <div class="container clearfix">
+
+                <!-- Portfolio Filter
+                ============================================= -->
+
+                <nav id="primary-menu" class="style-2">
+
+                    <div class="container clearfix">
+
+                        <div id="primary-menu-trigger"><i class="icon-reorder"></i></div>
+
+                        <ul>
+                                <?php foreach ($goster2 as $value) { ?>
+                            <li class="current"><a  href="kategori-<?=seo($value["kategori_ad"])?>"><div class="navbar navbar-brand text text-warning"><?= $value['kategori_ad'] ?></div></a>
+
+                            </li><?php } ?>
 
 
-<div class="container">
-
-	<div class="clearfix"></div>
-	<div class="lines"></div>
-</div>
-
-<div class="container">
-
-	<div class="row">
-		<div class="col-md-9"><!--Main content-->
-			<div class="title-bg">
-				<div class="title">Ürünler</div>
-				<div class="title-nav">
-					<a href="javascripti:void(0);"><i class="fa fa-th-large"></i>grid</a>
-					<a href="javascripti:void(0);"><i class="fa fa-bars"></i>List</a>
-				</div>
-			</div>
-			<div class="row prdct"><!--Products-->
-
-
-				<?php
-
-                     $sayfada = 6; // sayfada gösterilecek içerik miktarını belirtiyoruz.
-                     $sorgu=$db->prepare("select * from kategori");
-                     $sorgu->execute();
-                     $toplam_icerik=$sorgu->rowCount();
-                     $toplam_sayfa = ceil($toplam_icerik / $sayfada);
-                  	// eğer sayfa girilmemişse 1 varsayalım.
-                     $sayfa = isset($_GET['sayfa']) ? (int) $_GET['sayfa'] : 1;
-          			// eğer 1'den küçük bir sayfa sayısı girildiyse 1 yapalım.
-                     if($sayfa < 1) $sayfa = 1; 
-        				// toplam sayfa sayımızdan fazla yazılırsa en son sayfayı varsayalım.
-                     if($sayfa > $toplam_sayfa) $sayfa = $toplam_sayfa; 
-                     $limit = ($sayfa - 1) * $sayfada;
-
-
-
-                     //aşağısı bir önceki default kodumuz...
-                     if (isset($_GET['sef'])) {
-
-
-                     	$kategorisor=$db->prepare("SELECT * FROM kategori where kategori_seourl=:seourl");
-                     	$kategorisor->execute(array(
-                     		'seourl' => $_GET['sef']
-                     		));
-
-                     	$kategoricek=$kategorisor->fetch(PDO::FETCH_ASSOC);
-
-                     	$kategori_id=$kategoricek['kategori_id'];
-
-
-                     	$urunsor=$db->prepare("SELECT * FROM urun where kategori_id=:kategori_id order by urun_id DESC limit $limit,$sayfada");
-                     	$urunsor->execute(array(
-                     		'kategori_id' => $kategori_id
-                     		));
-
-                     	$say=$urunsor->rowCount();
-
-                     } else {
-
-                     	$urunsor=$db->prepare("SELECT * FROM urun order by urun_id DESC limit $limit,$sayfada");
-                     	$urunsor->execute();
-
-                     }
+                        </ul>
 
 
 
 
 
 
-                     if ($toplam_icerik==0) {
-                     	echo "Bu kategoride ürün bulunamadı";
-                     }
+                    </div>
+
+                </nav>
+                <br><br>
 
 
-                     while($uruncek=$urunsor->fetch(PDO::FETCH_ASSOC)) {
-                     	?>
 
-                     	<div class="col-md-4">
-                     		<div class="productwrap">
-                     			<div class="pr-img">
-                     				<div class="hot"></div>
-                     				<a href="urun-<?=seo($uruncek["urun_ad"]).'-'.$uruncek["urun_id"]?>"><img src="images\sample-3.jpg" alt="" class="img-responsive"></a>
-                     				<div class="pricetag on-sale"><div class="inner on-sale"><span class="onsale"><span class="oldprice"><?php echo $uruncek['urun_fiyat']*1.50 ?> TL</span><?php echo $uruncek['urun_fiyat'] ?> TL</span></div></div>
-                     			</div>
-                     			<span class="smalltitle"><a href="product.htm"><?php echo $uruncek['urun_ad'] ?></a></span>
-                     			<span class="smalldesc">Ürün Kodu.: <?php echo $uruncek['urun_id'] ?></span>
-                     		</div>
-                     	</div>
+                <div class="clear"></div>
 
+                <div id="portfolio" class="portfolio grid-container portfolio-2 portfolio-nomargin clearfix">
+                    <?php foreach ($bbb as $item) { ?>
+                    <article  class="portfolio-item  pf-icons"  >
+                        <div class="portfolio-image">
 
-                     	<?php } ?>
+                            <a href="#">
+                                <img src="<?php echo $item['urunfoto_resimyol'] ?> "style="width: ">
+                            </a>
+                                <div class="portfolio-desc">
+                                    <p><a href="portfolio-single.html"></a></p>
+                                    <span class="entry-link"><a href="#" style="font-size: 20px"><?php echo $item['urun_ad'] ?></a></span>
+                                    <ul class="entry-link">
+                                        <li ><span class="color" style="font-size: 20px"><?php echo $item['urun_fiyat']  ?>€</span></li>
 
-                     	<div align="right" class="col-md-12">
-                     		<ul class="pagination">
-
-                     			<?php
-
-                     			$s=0;
-
-                     			while ($s < $toplam_sayfa) {
-
-                     				$s++; ?>
-
-                     				<?php 
-
-                     				if ($s==$sayfa) {?>
-
-                     				<li class="active">
-
-                     					<a href="kategoriler?sayfa=<?php echo $s; ?>"><?php echo $s; ?></a>
-
-                     				</li>
-
-                     				<?php } else {?>
+                                    </ul>
 
 
-                     				<li>
+                                </div>
 
-                     					<a href="kategoriler?sayfa=<?php echo $s; ?>"><?php echo $s; ?></a>
+                            <div class="portfolio-overlay">
+                                <a href="#" class="left-icon" data-lightbox="image"><i class="icon-shopping-cart"></i></a>
+                                <a href="portfolio-single.html" class="right-icon"><i class="icon-line-plus"></i></a>
+                            </div>
+                        </div>
 
-                     				</li>
-
-                     				<?php   }
-
-                     			}
-
-                     			?>
-
-                     		</ul>
-                     	</div>
+                    </article>
+                    <?php } ?>
 
 
 
 
 
-                     </div><!--Products-->
 
-<!-- 
-				<ul class="pagination shop-pag">
-					<li><a href="#"><i class="fa fa-caret-left"></i></a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#"><i class="fa fa-caret-right"></i></a></li>
-				</ul> -->
+                </div>
 
-			</div>
 
-			<?php include 'sidebar.php' ?>
-		</div>
-		<div class="spacer"></div>
-	</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
 	
 	<?php include 'footer.php'; ?>

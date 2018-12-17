@@ -159,7 +159,7 @@ if (isset($_POST['sliderkaydet'])) {
 
 if (isset($_POST['favorikaydet'])) {
 
-    $uploads_dir = '../../dimg';
+    $uploads_dir = '../../dimg/favoriler';
 
 
 
@@ -200,7 +200,28 @@ if (isset($_POST['favorikaydet'])) {
 }
 
 
+if ($_GET['favorisil']=="ok") {
 
+    $sil=$db->prepare("DELETE from favori where favori_id=:id");
+    $kontrol=$sil->execute(array(
+        'id' => $_GET['favori_id']
+    ));
+
+
+    if ($kontrol) {
+
+
+        header("location:../production/favori.php?sil=ok");
+
+
+    } else {
+
+        header("location:../production/favori.php?sil=no");
+
+    }
+
+
+}
 
 
 
