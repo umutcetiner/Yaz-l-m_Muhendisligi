@@ -64,46 +64,42 @@ $kategorisor->execute();
 
               <tbody>
 
-                <?php 
+              <?php
 
-                $say=0;
+              $say=0;
 
-                while($kategoricek=$kategorisor->fetch(PDO::FETCH_ASSOC)) { $say++?>
-
-
-                <tr>
-                 <td width="20"><?php echo $say ?></td>
-                 <td><?php echo $kategoricek['kategori_ad'] ?></td>
-                 <td><?php echo $kategoricek['kategori_sira'] ?></td>
-
-                 <td><center><?php 
-
-                  if ($kategoricek['kategori_durum']==1) {?>
-
-                  <button class="btn btn-success btn-xs">Aktif</button>
-
-                  <!--
-
-                  success -> yeşil
-                  warning -> turuncu
-                  danger -> kırmızı
-                  default -> beyaz
-                  primary -> mavi buton
-
-                  btn-xs -> ufak buton 
-
-                -->
-
-                <?php } else {?>
-
-                <button class="btn btn-danger btn-xs">Pasif</button>
+              while($kategoricek=$kategorisor->fetch(PDO::FETCH_ASSOC)) { $say++?>
 
 
-                <?php } ?>
-              </center>
+                  <tr>
+                      <td width="20"><?php echo $say ?></td>
+                      <td><?php echo $kategoricek['kategori_ad'] ?></td>
+                      <td><?php echo $kategoricek['kategori_sira'] ?></td>
+
+                      <td><center><?php
+
+                              if (@$kategoricek['kategori_durum']==0) {?>
+
+                                  <a href="../netting/islem.php?kategori_id=<?php echo $kategoricek['kategori_id'] ?>&kdurum_one=1&kategori_durum=ok"><button class="btn btn-success btn-xs">AKTİF</button></a>
 
 
-            </td>
+                              <?php } elseif ($kategoricek['kategori_durum']==1) {?>
+
+                                  <a href="../netting/islem.php?kategori_id=<?php echo $kategoricek['kategori_id'] ?>&kdurum_one=0&kategori_durum=ok"><button class="btn btn-warning btn-xs">PASİF</button></a>
+
+
+                              <?php } ?>
+
+                      </td>
+
+
+
+
+
+
+                          </center>
+
+
 
 
             <td><center><a href="kategori-duzenle.php?kategori_id=<?php echo $kategoricek['kategori_id']; ?>"><button class="btn btn-primary btn-xs">Düzenle</button></a></center></td>
@@ -111,10 +107,8 @@ $kategorisor->execute();
           </tr>
 
 
+              <?php } ?>
 
-          <?php  }
-
-          ?>
 
 
         </tbody>

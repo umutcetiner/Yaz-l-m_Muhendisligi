@@ -25,11 +25,11 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
 
                                 <?php
 
-                                if ($_GET['durum']=="ok") {?>
+                                if (@$_GET['durum']=="ok") {?>
 
                                     <b style="color:green;">İşlem Başarılı...</b>
 
-                                <?php } elseif ($_GET['durum']=="no") {?>
+                                <?php } elseif (@$_GET['durum']=="no") {?>
 
                                     <b style="color:red;">İşlem Başarısız...</b>
 
@@ -42,15 +42,7 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
                         <ul class="nav navbar-right panel_toolbox">
                             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                             </li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">Settings 1</a>
-                                    </li>
-                                    <li><a href="#">Settings 2</a>
-                                    </li>
-                                </ul>
-                            </li>
+
                             <li><a class="close-link"><i class="fa fa-close"></i></a>
                             </li>
                         </ul>
@@ -60,7 +52,37 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
                         <br />
 
                         <!-- / => en kök dizine çık ... ../ bir üst dizine çık -->
-                        <form action="../netting/islem.php" method="POST" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <form action="../netting/islem.php" method="POST" id="demo-form2" enctype="multipart/form-data" data-parsley-validate class="form-horizontal form-label-left">
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Yüklü Logo<br><span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+
+                                    <?php
+                                    if (strlen($kullanicicek['kullanici_resim'])>0) {?>
+
+                                        <img width="200"  src="../../<?php echo $kullanicicek['kullanici_resim']; ?>">
+
+                                    <?php } else {?>
+
+
+                                        <img width="200"  src="../../dimg/logo-yok.png">
+
+
+                                    <?php } ?>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Resim Seç<span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="file" id="first-name"  name="kullanici_resim"  class="form-control col-md-7 col-xs-12">
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+
+
 
 
 

@@ -88,7 +88,7 @@ if (!isset($_SESSION['kullanici_mail'])) {
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>IGUANA-IGT</span></a>
+            <a href="index.php" class="site_title"><i class="fa fa-home"></i> <span><?php echo $ayarcek['ayar_title'] ?></span></a>
           </div>
 
           <div class="clearfix"></div>
@@ -96,7 +96,7 @@ if (!isset($_SESSION['kullanici_mail'])) {
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="../<?php echo $kullanicicek['kullanici_resim'] ?>" alt="..." class="img-circle profile_img">
+              <img src="../../<?php echo $kullanicicek['kullanici_resim'] ?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Hoşgeldin</span>
@@ -110,7 +110,7 @@ if (!isset($_SESSION['kullanici_mail'])) {
           <!-- sidebar menu -->
           <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
             <div class="menu_section">
-              <h3>General</h3>
+
               <ul class="nav side-menu">
 
                 <li><a href="index.php"><i class="fa fa-home"></i> Anasayfa </a></li>
@@ -206,7 +206,7 @@ if (!isset($_SESSION['kullanici_mail'])) {
         <ul class="nav navbar-nav navbar-right">
           <li class="">
             <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-              <img src="../<?= $kullanicicek['kullanici_resim'] ?>" alt=""><?php echo $kullanicicek['kullanici_adsoyad'] ?>
+              <img src="../../<?= $kullanicicek['kullanici_resim'] ?>" alt=""><?php echo $kullanicicek['kullanici_adsoyad'] ?>
               <span class=" fa fa-angle-down"></span>
             </a>
             <ul class="dropdown-menu dropdown-usermenu pull-right">

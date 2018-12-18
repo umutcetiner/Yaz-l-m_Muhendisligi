@@ -32,9 +32,9 @@ $kategoricek=$kategorisor->fetch(PDO::FETCH_ASSOC);
 ?>
 <?php
 
-//bütün kayıtları bir kereye mahsus olmak üzere listeliyoruz; daha doğrusu, bir diziye aktarmak için verileri çekiyoruz
 
-$query = "SELECT * FROM kategori order by kategori_sira ASC ";
+
+$query = "SELECT * FROM kategori where kategori_durum=1 order by kategori_sira ASC ";
 $goster = $db->prepare($query);
 $goster->execute();
 $goster2=$goster->fetchAll(PDO::FETCH_ASSOC);

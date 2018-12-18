@@ -188,6 +188,7 @@ if (isset($_POST['favorikaydet'])) {
     ));
 
 
+
     if ($update) {
 
 
@@ -375,6 +376,8 @@ if (isset($_POST['logoduzenle'])) {
 	}
 
 }
+
+
 
 
 if (isset($_POST['admingiris'])) {
@@ -636,35 +639,53 @@ if (isset($_POST['mesafelikaydet'])) {
 
 
 if (isset($_POST['kullaniciduzenle'])) {
+    $uploads_dir = '../../dimg/adminler';
+
+    @$tmp_name = $_FILES['kullanici_resim']["tmp_name"];
+    @$name = $_FILES['kullanici_resim']["name"];
+
+    $benzersizsayi4 = rand(20000, 32000);
+    $rrefimgyol = substr($uploads_dir, 6) . "/" . $benzersizsayi4 . $name;
+
+
+    @move_uploaded_file($tmp_name, "$uploads_dir/$benzersizsayi4$name");
+
+
 
 
         $duzenle=$db->prepare("UPDATE kullanici SET
+            kullanici_resim=:logo,
 		    kullanici_tc=:kullanici_tc,
 		    kullanici_adsoyad=:kullanici_adsoyad,
 		    kullanici_durum=:kullanici_durum
-			WHERE slider_id={$_POST['slider_id']}");
+			WHERE kullanici_id={$_POST['kullanici_id']}");
         $update=$duzenle->execute(array(
+            'logo' => $rrefimgyol,
             'kullanici_tc' => $_POST['kullanici_tc'],
             'kullanici_adsoyad' => $_POST['kullanici_adsoyad'],
             'kullanici_durum' => $_POST['kullanici_durum']
         ));
+    $kullanici_id=$_POST['kullanici_id'];
 
-        $kullanici_id=$_POST['kullanici_id'];
-
-        $ayarkaydet=$db->prepare("UPDATE kullanici SET
+    $ayarkaydet=$db->prepare("UPDATE kullanici SET
+        kullanici_resim=:logo,
 		kullanici_tc=:kullanici_tc,
 		kullanici_adsoyad=:kullanici_adsoyad,
 		kullanici_durum=:kullanici_durum
 		WHERE kullanici_id={$_POST['kullanici_id']}");
 
-        $update=$ayarkaydet->execute(array(
-            'kullanici_tc' => $_POST['kullanici_tc'],
-            'kullanici_adsoyad' => $_POST['kullanici_adsoyad'],
-            'kullanici_durum' => $_POST['kullanici_durum']
-        ));
+    $update=$ayarkaydet->execute(array(
+        'logo' => $rrefimgyol,
+        'kullanici_tc' => $_POST['kullanici_tc'],
+        'kullanici_adsoyad' => $_POST['kullanici_adsoyad'],
+        'kullanici_durum' => $_POST['kullanici_durum']
+    ));
 
 
-        if ($update) {
+
+
+
+    if ($update) {
 
             Header("Location:../production/kullanici-duzenle.php?kullanici_id=$kullanici_id&durum=ok");
 
@@ -674,6 +695,23 @@ if (isset($_POST['kullaniciduzenle'])) {
         }
 
     }
+
+
+
+
+
+    if ($update) {
+
+
+
+        Header("Location:../production/kullanici-duzenle.php?kullanici_id=$kullanici_id&durum=ok");
+
+    } else {
+
+        Header("Location:../production/kullanici-duzenle.php?kullanici_id=$kullanici_id&durum=no");
+
+
+}
 
 
 if (isset($_POST['kullanicibilgiguncelle'])) {
@@ -1134,7 +1172,35 @@ if ($_GET['favori_durum']=="ok") {
 	}
 
 }
+if ($_GET['kategori_durum']=="ok") {
 
+
+
+    $duzenle=$db->prepare("UPDATE kategori SET
+		
+		kategori_durum=:kategori_durum
+		
+		WHERE kategori_id={$_GET['kategori_id']}");
+
+    $update=$duzenle->execute(array(
+
+        'kategori_durum' => $_GET['kdurum_one']
+    ));
+
+
+
+    if ($update) {
+
+
+
+        Header("Location:../production/kategori.php?durum=ok");
+
+    } else {
+
+        Header("Location:../production/kategori.php?durum=no");
+    }
+
+}
 
 
 if ($_GET['yorumsil']=="ok") {

@@ -62,7 +62,7 @@ $uruncek=$urunsor->fetch(PDO::FETCH_ASSOC);
 
                   $urun_id=$uruncek['kategori_id']; 
 
-                  $kategorisor=$db->prepare("select * from kategori where kategori_ust=:kategori_ust order by kategori_sira");
+                  $kategorisor=$db->prepare("select * from kategori  order by kategori_sira");
                   $kategorisor->execute(array(
                     'kategori_ust' => 0
                     ));
