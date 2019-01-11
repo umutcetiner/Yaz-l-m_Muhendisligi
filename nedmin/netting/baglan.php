@@ -1,10 +1,5 @@
 <?php 
 
-//Çoklu Dil Mantığı if/else
-
-//$_SESSION['tr'];
-//veya
-////$_SESSION['eng'];
 
 try {
 

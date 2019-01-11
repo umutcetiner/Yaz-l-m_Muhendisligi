@@ -25,6 +25,7 @@ if ($say==0) {
   Header("Location:login.php?durum=izinsiz");
   exit;
 
+
 }
 
 
@@ -210,7 +211,7 @@ if (!isset($_SESSION['kullanici_mail'])) {
               <span class=" fa fa-angle-down"></span>
             </a>
             <ul class="dropdown-menu dropdown-usermenu pull-right">
-              <li><a href="javascript:;"> Profil Bilgilerim</a></li>
+
 
               
               <li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Güvenli Çıkış</a></li>

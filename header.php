@@ -18,6 +18,12 @@ $kullanicisor=$db->prepare("SELECT * FROM kullanici where kullanici_mail=:mail")
 $say=$kullanicisor->rowCount();
 $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
 
+$sepetcek=$db->prepare("SELECT * FROM sepet where kullanici_id=:kullanici_id");
+$sepetcek->execute(array(
+
+  'kullanici_id' => $kullanicicek['kullanici_id']
+));
+$sepetsay=$sepetcek->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -109,51 +115,61 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
                 ============================================= -->
                 <div class="top-links">
                     <ul>
-                        <li><a href="#">USD</a>
-                            <ul>
-                                <li><a href="#">EUR</a></li>
-                                <li><a href="#">AUD</a></li>
-                                <li><a href="#">GBP</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">EN</a>
-                            <ul>
-                                <li><a href="#"><img src="images/icons/flags/french.png" alt="French"> FR</a></li>
-                                <li><a href="#"><img src="images/icons/flags/italian.png" alt="Italian"> IT</a></li>
-                                <li><a href="#"><img src="images/icons/flags/german.png" alt="German"> DE</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Login</a>
-                            <?php
-                            if (!isset($_SESSION['userkullanici_mail'])) {?>
+
+
+
+                        <?php
+                        if (!isset($_SESSION['userkullanici_mail'])) {?>
+
+                            <li><a href="register.php">KAYIT OL</a>
+
+                            </li>
+
+                        <li><a href="#">GİRİŞ</a>
+
                             <div class="top-link-section">
-                                <form id="top-login" role="form">
+                                <form id="top-login" action="nedmin/netting/islem.php" method="POST" role="form">
                                     <div class="input-group" id="top-login-username">
                                         <span class="input-group-addon"><i class="icon-user"></i></span>
 
-                                        <input type="email" class="form-control" placeholder="Email address" required="">
+                                        <input type="email" class="form-control" name="kullanici_mail" placeholder="Email address" required="">
                                     </div>
                                     <div class="input-group" id="top-login-password">
                                         <span class="input-group-addon"><i class="icon-key"></i></span>
-                                        <input type="password" class="form-control" placeholder="Password" required="">
+                                        <input type="password" name="kullanici_password" class="form-control" placeholder="Password" required="">
                                     </div>
-                                    <label class="checkbox">
-                                        <input type="checkbox" value="remember-me"> Remember me
-                                    </label>
-                                    <button class="btn btn-danger btn-block" type="submit">Sign in</button>
-                                    <? } else { ?>
 
-                                    <a href="#"  class="btn btn-default btn-dark">Hoşgeldin<span>--</span><?php echo $kullanicicek['kullanici_adsoyad'] ?></a>
+                                    <button class="btn btn-danger btn-block" type="submit" name="kullanicigiris">GİRİŞ</button>
 
-                                    <?php } ?>
+
+
+
 
                                 </form>
                             </div>
                         </li>
+
+                        <?php }  else { ?>
+
+
+
+                       <a href="#" class="button button-3d  button-small button-rounded button-green"> <?php echo $kullanicicek['kullanici_adsoyad'] ?>
+
+
+
+
+                       </a>
+
+
+
+
+                        <?php } ?>
+
                         <?php
 
                         if (isset($_SESSION['userkullanici_mail'])) {?>
-                        <li><a href="logout" class="mycheck">Güvenli Çıkış</a></li> <?php } ?>
+                            <a href="logout.php" class="button button-small button-3d button-rounded button-red" ><i class="icon-off"></i>GÜVENLİ ÇIKIŞ</a>
+                        <?php } ?>
                     </ul>
                 </div><!-- .top-links end -->
 
@@ -225,7 +241,7 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
                     <!-- Top Cart
                     ============================================= -->
                     <div id="top-cart">
-                        <a href="#" id="top-cart-trigger"><i class="icon-shopping-cart"></i><span>5</span></a>
+                        <a href="#" id="top-cart-trigger"><i class="icon-shopping-cart"></i><span><?php echo count($sepetsay); ?></span></a>
                         <div class="top-cart-content">
                             <div class="top-cart-title">
                                 <h4>Shopping Cart</h4>
@@ -247,7 +263,7 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
                                     ));
 
                                     $uruncek=$urunsor->fetch(PDO::FETCH_ASSOC);
-                                    $toplam_fiyat+=$uruncek['urun_fiyat']*$sepetcek['urun_adet'];
+                                    @$toplam_fiyat+=$uruncek['urun_fiyat']*$sepetcek['urun_adet'];
                                     ?>
 
                                     <tr>
@@ -266,7 +282,7 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
                             </div>
                             <div class="top-cart-action clearfix">
                                 <span class="fleft top-checkout-price"><?php echo @$toplam_fiyat ?> TL</span>
-                                <button class="button button-3d button-small nomargin fright">View Cart</button>
+                                <a href="sepet.php" class="button button-3d button-small nomargin fright" >Sepete git</a>
                             </div>
                         </div>
                     </div><!-- #top-cart end -->

@@ -67,7 +67,7 @@ include 'header.php';
 
                 <?php
 
-                $sayfada = 25; // sayfada gösterilecek içerik miktarını belirtiyoruz.
+                $sayfada = 25;
 
 
                 $sorgu=$db->prepare("select * from urunfoto");
@@ -76,13 +76,13 @@ include 'header.php';
 
                 $toplam_sayfa = ceil($toplam_urunfoto / $sayfada);
 
-                  // eğer sayfa girilmemişse 1 varsayalım.
+
                 $sayfa = isset($_GET['sayfa']) ? (int) $_GET['sayfa'] : 1;
 
-          // eğer 1'den küçük bir sayfa sayısı girildiyse 1 yapalım.
+
                 if($sayfa < 1) $sayfa = 1; 
 
-        // toplam sayfa sayımızdan fazla yazılırsa en son sayfayı varsayalım.
+
                 if($sayfa > $toplam_sayfa) $sayfa = $toplam_sayfa; 
 
                 $limit = ($sayfa - 1) * $sayfada;
@@ -104,7 +104,7 @@ include 'header.php';
                         <p><?php echo $urunfotocek['urunfoto_ad']; ?> <?php echo $urunfotocek['urunfoto_id']; ?></p>
                         <div class="tools tools-bottom">
 
-                          <!--<a href="#"><i class="fa fa-times"></i></a>-->
+
 
                         </div>
 

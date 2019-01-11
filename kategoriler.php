@@ -3,24 +3,32 @@
 include 'header.php';
 
 
+$query = "SELECT * FROM kategori  order by kategori_sira ASC ";
+$goster = $db->prepare($query);
+$goster->execute();
+$goster2=$goster->fetchAll(PDO::FETCH_ASSOC);
+
+
 if(isset($_GET['sef'])){
 
-$kategorisor=$db->prepare("SELECT * FROM kategori where kategori_seourl=:seourl");
-$kategorisor->execute(array(
+    $kategorisor=$db->prepare("SELECT * FROM kategori where kategori_seourl=:seourl");
+    $kategorisor->execute(array(
         'seourl' => $_GET['sef']
-));
-$kategoricek=$kategorisor->fetch(PDO::FETCH_ASSOC);
- $kategori_id=$kategoricek['kategori_id'];
+    ));
+    $kategoricek=$kategorisor->fetch(PDO::FETCH_ASSOC);
+    $kategori_id=$kategoricek['kategori_id'];
 
-    $asd = "SELECT * FROM urunfoto  join urun on urun.urun_id=urunfoto.urun_id join kategori on kategori.kategori_id=urun.kategori_id where kategori.kategori_id=:kategori_id ";
+    $asd = "SELECT * FROM urunfoto join urun on urun.urun_id=urunfoto.urun_id join kategori on kategori.kategori_id=urun.kategori_id where kategori.kategori_id=:kategori_id ";
     $aaa = $db->prepare($asd);
     $aaa ->execute(array(
-            'kategori_id'=>$kategori_id
+        'kategori_id'=>$kategori_id
     ));
     $bbb=$aaa->fetchall(PDO::FETCH_ASSOC);
 
 
-}else{
+}
+
+else{
     $asd = "SELECT * FROM urunfoto  join urun on urun.urun_id=urunfoto.urun_id join kategori on kategori.kategori_id=urun.kategori_id ";
     $aaa = $db->prepare($asd);
     $aaa ->execute();
@@ -29,15 +37,12 @@ $kategoricek=$kategorisor->fetch(PDO::FETCH_ASSOC);
 
 
 
-?>
-<?php
 
 
 
-$query = "SELECT * FROM kategori where kategori_durum=1 order by kategori_sira ASC ";
-$goster = $db->prepare($query);
-$goster->execute();
-$goster2=$goster->fetchAll(PDO::FETCH_ASSOC);
+
+
+
 
 
 
@@ -48,6 +53,8 @@ $goster2=$goster->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>
+
+
 
     <section id="content">
 
@@ -66,7 +73,7 @@ $goster2=$goster->fetchAll(PDO::FETCH_ASSOC);
 
                         <ul>
                                 <?php foreach ($goster2 as $value) { ?>
-                            <li class="current"><a  href="kategori-<?=seo($value["kategori_ad"])?>"><div class="navbar navbar-brand text text-warning"><?= $value['kategori_ad'] ?></div></a>
+                            <li class="current"><a  href="kategori-<?=seo($value["kategori_seourl"])?>"><div class="navbar navbar-brand text text-warning"><?= $value['kategori_ad'] ?></div></a>
 
                             </li><?php } ?>
 
@@ -93,7 +100,10 @@ $goster2=$goster->fetchAll(PDO::FETCH_ASSOC);
                         <div class="portfolio-image">
 
                             <a href="#">
+
                                 <img src="<?php echo $item['urunfoto_resimyol'] ?> "style="width: ">
+
+
                             </a>
                                 <div class="portfolio-desc">
                                     <p><a href="portfolio-single.html"></a></p>
@@ -106,14 +116,22 @@ $goster2=$goster->fetchAll(PDO::FETCH_ASSOC);
 
                                 </div>
 
-                            <div class="portfolio-overlay">
-                                <a href="#" class="left-icon" data-lightbox="image"><i class="icon-shopping-cart"></i></a>
-                                <a href="portfolio-single.html" class="right-icon"><i class="icon-line-plus"></i></a>
-                            </div>
+
+                            <div class="portfolio-overlay" >
+
+
+                                    <a href="urun-<?=seo($item['urun_seourl']) ?>" class="right-icon" ><i class="icon-line-plus"></i></a>
+                                </div>
+
+
+
+
                         </div>
 
                     </article>
                     <?php } ?>
+
+
 
 
 

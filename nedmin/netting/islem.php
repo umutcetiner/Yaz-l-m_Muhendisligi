@@ -47,26 +47,20 @@ if (isset($_POST['kullanicikaydet'])) {
 				$kullanici_yetki=1;
 
 			//Kullanıcı kayıt işlemi yapılıyor...
-				$kullanicikaydet=$db->prepare("INSERT INTO kullanici SET
-					kullanici_adsoyad=:kullanici_adsoyad,
-					kullanici_mail=:kullanici_mail,
-					kullanici_password=:kullanici_password,
-					kullanici_yetki=:kullanici_yetki
+				$kullanicikaydet=$db->prepare("INSERT INTO kullanici(kullanici_adsoyad,kullanici_mail,kullanici_gsm,kullanici_password,kullanici_yetki) VALUES (?,?,?,?,?)
+					
 					");
 				$insert=$kullanicikaydet->execute(array(
-					'kullanici_adsoyad' => $kullanici_adsoyad,
-					'kullanici_mail' => $kullanici_mail,
-					'kullanici_password' => $password,
-					'kullanici_yetki' => $kullanici_yetki
+					$kullanici_adsoyad,$kullanici_mail,$_POST['kullanici_gsm'],$password,$kullanici_yetki
 					));
 
 				if ($insert) {
 
 
-					header("Location:../../index.php?durum=loginbasarili");
+					header("Location:../../register.php?durum=loginbasarili");
 
 
-				//Header("Location:../production/genel-ayarlar.php?durum=ok");
+
 
 				} else {
 
@@ -201,7 +195,7 @@ if (isset($_POST['favorikaydet'])) {
 }
 
 
-if ($_GET['favorisil']=="ok") {
+if (@$_GET['favorisil']=="ok") {
 
     $sil=$db->prepare("DELETE from favori where favori_id=:id");
     $kontrol=$sil->execute(array(
@@ -223,6 +217,30 @@ if ($_GET['favorisil']=="ok") {
 
 
 }
+
+if (@$_GET['sepetsil']=="ok") {
+    print_r($_GET['sepet_id']);
+    $sil=$db->prepare("DELETE from sepet where sepet_id=:id");
+    $kontrol=$sil->execute(array(
+        'id' => $_GET['sepet_id']
+    ));
+
+
+    if ($kontrol) {
+
+
+        header("location:../../sepet.php?sil=ok");
+
+
+    } else {
+
+        header("location:../../sepet.php?sil=no");
+
+    }
+
+
+}
+
 
 
 
@@ -317,7 +335,7 @@ if (isset($_POST['sliderduzenle'])) {
 
 // Slider Düzenleme Bitiş
 
-if ($_GET['slidersil']=="ok") {
+if (@$_GET['slidersil']=="ok") {
 
 	$sil=$db->prepare("DELETE from slider where slider_id=:slider_id");
 	$kontrol=$sil->execute(array(
@@ -432,6 +450,8 @@ if (isset($_POST['kullanicigiris'])) {
 		));
 
 
+
+
 	$say=$kullanicisor->rowCount();
 
 
@@ -440,7 +460,7 @@ if (isset($_POST['kullanicigiris'])) {
 
 		echo $_SESSION['userkullanici_mail']=$kullanici_mail;
 
-		header("Location:../../");
+         header("Location:../../");
 		exit;
 		
 
@@ -700,18 +720,9 @@ if (isset($_POST['kullaniciduzenle'])) {
 
 
 
-    if ($update) {
 
 
 
-        Header("Location:../production/kullanici-duzenle.php?kullanici_id=$kullanici_id&durum=ok");
-
-    } else {
-
-        Header("Location:../production/kullanici-duzenle.php?kullanici_id=$kullanici_id&durum=no");
-
-
-}
 
 
 if (isset($_POST['kullanicibilgiguncelle'])) {
@@ -978,7 +989,8 @@ if (isset($_POST['urunekle'])) {
 		urun_keyword=:urun_keyword,
 		urun_durum=:urun_durum,
 		urun_stok=:urun_stok,	
-		urun_seourl=:seourl		
+		urun_seourl=:seourl
+				
 		");
 	$insert=$kaydet->execute(array(
 		'kategori_id' => $_POST['kategori_id'],
@@ -1081,32 +1093,59 @@ if (isset($_POST['yorumkaydet'])) {
 }
 
 
-if (isset($_POST['sepetekle'])) {
+if (isset($_POST['sepeteekle2'])) {
 
 
 	$ayarekle=$db->prepare("INSERT INTO sepet SET
-		urun_adet=:urun_adet,
 		kullanici_id=:kullanici_id,
 		urun_id=:urun_id	
 		
 		");
 
 	$insert=$ayarekle->execute(array(
-		'urun_adet' => $_POST['urun_adet'],
+
 		'kullanici_id' => $_POST['kullanici_id'],
 		'urun_id' => $_POST['urun_id']
 		
 		));
 
-
 	if ($insert) {
 
-		Header("Location:../../sepet?durum=ok");
+		Header("Location:../../kategoriler?durum=ok");
 
 	} else {
 
-		Header("Location:../../sepet?durum=no");
+		Header("Location:../../kategoriler?durum=no");
 	}
+
+}
+
+if (isset($_POST['sepeteekle'])) {
+
+
+    $ayarekle=$db->prepare("INSERT INTO sepet SET
+		urun_adet=:urun_adet,
+		kullanici_id=:kullanici_id,
+		urun_id=:urun_id	
+		
+		");
+
+    $insert=$ayarekle->execute(array(
+        'urun_adet' => $_POST['urun_adet'],
+        'kullanici_id' => $_POST['kullanici_id'],
+        'urun_id' => $_POST['urun_id']
+
+    ));
+
+
+    if ($insert) {
+
+        Header("Location:../../sepet?durum=ok");
+
+    } else {
+
+        Header("Location:../../sepet?durum=no");
+    }
 
 }
 
